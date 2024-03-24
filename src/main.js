@@ -16,3 +16,9 @@ const httpServer = createServer((request, response) => {
 });
 
 httpServer.listen(config.httpPort);
+
+['uncaughtException', 'unhandledRejection'].forEach((event) => {
+  process.on(event, (error) => {
+    console.error(`Event: ${event}\nMessage: ${error.stack || error}`);
+  });
+});
