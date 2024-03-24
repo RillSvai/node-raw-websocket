@@ -1,0 +1,20 @@
+{
+  "name": "raw-websocket",
+  "version": "1.0.0",
+  "description": "Raw implementation of WebSocket",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start:dev": "NODE_ENV=development nodemon ./src/main.js",
+    "start": "node ./src/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
