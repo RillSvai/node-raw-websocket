@@ -1,10 +1,11 @@
-import { CONTENT_TYPE, CONTENT_TYPE_KEY, HTTP_STATUS_CODE } from '../constants/http-headers.constants.js';
+import { CONTENT_TYPE, CONTENT_TYPE_HEADER, HTTP_STATUS_CODE } from '../constants/http-headers.constants.js';
 import * as fs from 'fs';
 import * as path from 'path';
+import { STATIC_CLASS } from '../constants/errors.constants.js';
 
 export class RootController {
   constructor() {
-    throw new Error('Cannot instantiate this class.');
+    throw new Error(STATIC_CLASS);
   }
 
   static getTestMessage(request, response) {
@@ -17,7 +18,7 @@ export class RootController {
       const cwd = process.cwd();
       const data = await fs.promises.readFile(path.join(cwd, 'public', 'favicon.ico'), 'utf-8');
 
-      response.writeHead(HTTP_STATUS_CODE.OK, { [CONTENT_TYPE_KEY]: CONTENT_TYPE.ICON });
+      response.writeHead(HTTP_STATUS_CODE.OK, { [CONTENT_TYPE_HEADER]: CONTENT_TYPE.ICON });
       response.end(data);
     } catch (error) {
       console.log(error);
