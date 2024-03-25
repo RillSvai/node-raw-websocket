@@ -8,7 +8,7 @@
   <body>
     <output id="message-box"></output>
     <script>
-      const messageBox = document.getElementById('messages');
+      const messageBox = document.getElementById('message-box');
       const webSocket = new WebSocket('ws://localhost:3333/');
 
       webSocket.onopen = (event) => {
@@ -18,16 +18,14 @@
         const data = {
           id,
           name: `[${id}] Client`,
-          address: {
-            street: 'some street',
-            phone: id.toString().repeat(4),
-          },
         };
 
         webSocket.send(JSON.stringify(data));
       };
 
-      webSocket.onmessage = (event) => console.log('Received message:', event.data);
+      webSocket.onmessage = (event) => {
+        messageBox.innerHTML += `</br> ${event.data}`;
+      };
       webSocket.onerror = (event) => console.log('WebSocker error:', event);
       webSocket.onclose = (event) => console.log('Disconnected from WebSocket server');
     </script>

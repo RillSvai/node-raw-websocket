@@ -8,7 +8,7 @@ export class WebSocketService {
     throw new Error(STATIC_CLASS);
   }
 
-  static handleWebSocketUpgrade(request, socket, head) {
+  static handleWebSocketUpgrade(request, socket) {
     const secWebSockerKey = request.headers[SEC_WEBSOCKET_KEY_HEADER.toLowerCase()];
 
     const secWebSockerAccept = HandshakeService.generateAcceptValue(secWebSockerKey);

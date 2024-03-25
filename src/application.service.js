@@ -15,5 +15,7 @@ export class RootService {
 
     response.writeHead(HTTP_STATUS_CODE.NOT_FOUND, { [CONTENT_TYPE_HEADER]: CONTENT_TYPE.PLAIN_TEXT });
     response.end('Handler for current route wasn`t found');
+
+    return undefined;
   }
 }
