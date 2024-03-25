@@ -1,9 +1,9 @@
 import { createServer } from 'http';
-import { loadConfiguration } from './config.js';
-import { WebSocketService } from './root/services/web-socket.service.js';
-import { RootService } from './root/services/root.service.js';
+import { WebSocketService } from './web-socket/services/web-socket.service.js';
+import { RootService } from './application.service.js';
+import { ConfigurationService } from './common/configuration/configuration.service.js';
 
-const config = loadConfiguration('./envs/.env');
+const config = ConfigurationService.loadConfiguration('./envs/.env');
 
 const httpServer = createServer(RootService.handleAnyRequest);
 

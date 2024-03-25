@@ -1,6 +1,6 @@
-import { STATIC_CLASS } from '../../constants/errors.constants.js';
-import { CONTENT_TYPE, CONTENT_TYPE_HEADER, HTTP_STATUS_CODE } from '../../constants/http-headers.constants.js';
-import { router } from '../../router.js';
+import { STATIC_CLASS } from './common/constants/errors.constants.js';
+import { CONTENT_TYPE, CONTENT_TYPE_HEADER, HTTP_STATUS_CODE } from './common/constants/http-headers.constants.js';
+import { router } from './router.js';
 
 export class RootService {
   constructor() {

@@ -1,4 +1,4 @@
-export class ConvertorService {
+export class ConvertorUtil {
   constructor() {
     throw new Error(STATIC_CLASS);
   }

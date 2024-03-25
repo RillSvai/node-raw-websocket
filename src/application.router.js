@@ -1,4 +1,4 @@
-import { RootController } from './root.controller.js';
+import { RootController } from './application.controller.js';
 
 export const rootRouter = {
   '/': RootController.getTestMessage,
