@@ -3,3 +3,5 @@ export const MASK_KEY_BYTES_LENGTH = 4;
 export const LENGTH_INDICATOR_7BITS = 125;
 export const LENGTH_INDICATOR_64BIT = 127;
 export const LENGTH_INDICATOR_16BIT = 126;
+export const MAX_LENGTH_16BIT = 65535;
+export const MAX_LENGTH_64BIT = Number.MAX_SAFE_INTEGER;

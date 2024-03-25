@@ -1,7 +1,7 @@
-import { CONTENT_TYPE, CONTENT_TYPE_HEADER, HTTP_STATUS_CODE } from '../constants/http-headers.constants.js';
+import { CONTENT_TYPE, CONTENT_TYPE_HEADER, HTTP_STATUS_CODE } from './common/constants/http-headers.constants.js';
 import * as fs from 'fs';
 import * as path from 'path';
-import { STATIC_CLASS } from '../constants/errors.constants.js';
+import { STATIC_CLASS } from './common/constants/errors.constants.js';
 
 export class RootController {
   constructor() {

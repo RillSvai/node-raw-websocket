@@ -1,4 +1,6 @@
-export class ConvertorService {
+import { STATIC_CLASS } from '../constants/errors.constants.js';
+
+export class ConvertorUtil {
   constructor() {
     throw new Error(STATIC_CLASS);
   }
