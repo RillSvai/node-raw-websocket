@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client</title>
+  </head>
+  <body>
+    <output id="message-box"></output>
+    <script>
+      const messageBox = document.getElementById('messages');
+      const webSocket = new WebSocket('ws://localhost:3333/');
+
+      webSocket.onopen = (event) => {
+        console.log('Connected to WebSocker server');
+
+        const id = Math.round(Math.random() * 1000);
+        const data = {
+          id,
+          name: `[${id}] Client`,
+          address: {
+            street: 'some street',
+            phone: id * 3,
+          },
+        };
+
+        webSocket.send(JSON.stringify(data));
+      };
+
+      webSocket.onmessage = (event) => console.log('Received message:', event.data);
+      webSocket.onerror = (event) => console.log('WebSocker error:', event);
+      webSocket.onclose = (event) => console.log('Disconnected from WebSocket server');
+    </script>
+  </body>
+</html>

@@ -8,4 +8,7 @@ export const CONTENT_TYPE = Object.freeze({
   ICON: 'image/x-icon',
 });
 
-export const CONTENT_TYPE_KEY = 'Content-Type';
+export const SEC_WEBSOCKET_KEY_HEADER = 'Sec-WebSocket-Key';
+export const SEC_WEBSOCKET_ACCEPT_HEADER = 'Sec-WebSocket-Accept';
+
+export const CONTENT_TYPE_HEADER = 'Content-Type';
