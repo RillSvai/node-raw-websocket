@@ -14,13 +14,13 @@
       webSocket.onopen = (event) => {
         console.log('Connected to WebSocker server');
 
-        const id = Math.round(Math.random() * 1000);
+        const id = Math.round(Math.random(100) * 1000);
         const data = {
           id,
           name: `[${id}] Client`,
           address: {
             street: 'some street',
-            phone: id * 3,
+            phone: id.toString().repeat(4),
           },
         };
 

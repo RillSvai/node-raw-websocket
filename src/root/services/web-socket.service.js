@@ -3,6 +3,7 @@ import { SEC_WEBSOCKET_ACCEPT_HEADER, SEC_WEBSOCKET_KEY_HEADER } from '../../con
 import { STATIC_CLASS } from '../../constants/errors.constants.js';
 import { FIRST_BIT } from '../../constants/binary.contants.js';
 import { LENGTH_INDICATOR_7BITS, MASK_KEY_BYTES_LENGTH } from '../../constants/web-socket.constants.js';
+import { ConvertorService } from './convertor.service.js';
 
 export class WebSocketService {
   constructor() {
@@ -44,6 +45,27 @@ export class WebSocketService {
 
     const maskKey = socket.read(MASK_KEY_BYTES_LENGTH);
     const encodedPayload = socket.read(payloadLength);
+    const decodedPayload = this.#unmaskPayload(encodedPayload, maskKey);
+    const received = Buffer.from(decodedPayload).toString('utf-8');
+    const data = JSON.parse(received);
+
+    console.log(Buffer.from(maskKey).toString('utf-8'));
+    console.log(data);
+  }
+
+  static #unmaskPayload(payload, maskKey) {
+    return Uint8Array.from(payload, (element, i) => {
+      const maskByte = maskKey[i % MASK_KEY_BYTES_LENGTH];
+      const result = element ^ maskByte;
+
+      const payloadBinary = ConvertorService.byteToBinaryString(element);
+      const maskBinary = ConvertorService.byteToBinaryString(maskByte);
+      const resultBinary = ConvertorService.byteToBinaryString(result);
+      const resultChar = ConvertorService.binaryToChar(resultBinary);
+      console.log(`${payloadBinary} ^ ${maskBinary} = ${resultBinary} decoded: ${resultChar}`);
+
+      return result;
+    });
   }
 
   static #generateAcceptValue(secWebSockerKey) {
