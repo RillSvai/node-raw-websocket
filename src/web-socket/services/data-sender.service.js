@@ -8,13 +8,20 @@ import {
 } from '../web-socket.constants.js';
 
 export class DataSenderService {
+  static connectedClients = new Set();
   constructor() {
     throw new Error(STATIC_CLASS);
   }
 
-  static sendTextMessage(message, socket) {
+  static #sendTextMessage(message, socket) {
     const dataFrameBuffer = this.#prepareTextMessage(message);
     socket.write(dataFrameBuffer);
+  }
+
+  static broadcastMessage(message) {
+    for (const client of this.connectedClients) {
+      this.#sendTextMessage(message, client);
+    }
   }
 
   static #prepareTextMessage(message) {

@@ -1,5 +1,10 @@
 import { STATIC_CLASS } from '../../common/constants/errors.constants.js';
-import { LENGTH_INDICATOR_7BITS, MASK_KEY_BYTES_LENGTH } from '../web-socket.constants.js';
+import {
+  LENGTH_INDICATOR_16BIT,
+  LENGTH_INDICATOR_64BIT,
+  LENGTH_INDICATOR_7BITS,
+  MASK_KEY_BYTES_LENGTH,
+} from '../web-socket.constants.js';
 import { ConvertorUtil } from '../../common/utils/convertor.util.js';
 import { DataSenderService } from './data-sender.service.js';
 
@@ -33,12 +38,31 @@ export class DataReceiverService {
     const [byte2] = socket.read(1);
 
     const payloadLengthIndicator = byte2 - 0x80;
-    let payloadLength = 0;
+    let payloadLength;
 
     if (payloadLengthIndicator < LENGTH_INDICATOR_7BITS) {
       payloadLength = payloadLengthIndicator;
-    }
+    } else if (payloadLengthIndicator === LENGTH_INDICATOR_16BIT) {
+      const payloadLengthBytes = socket.read(2);
+      const dataView = new DataView(
+        payloadLengthBytes.buffer,
+        payloadLengthBytes.byteOffset,
+        payloadLengthBytes.byteLength,
+      );
+      payloadLength = dataView.getUint16(0, false);
+    } else if (payloadLengthIndicator === LENGTH_INDICATOR_64BIT) {
+      const payloadLengthBytes = socket.read(8);
+      const dataView = new DataView(
+        payloadLengthBytes.buffer,
+        payloadLengthBytes.byteOffset,
+        payloadLengthBytes.byteLength,
+      );
 
+      const highBits = dataView.getUint32(0, false);
+      const lowBits = dataView.getUint32(4, false);
+
+      payloadLength = highBits * 2 ** 32 + lowBits;
+    }
     const maskKey = socket.read(MASK_KEY_BYTES_LENGTH);
     const encodedPayload = socket.read(payloadLength);
     const dataUtf8 = this.#unmaskPayload(encodedPayload, maskKey);
@@ -56,7 +80,7 @@ export class DataReceiverService {
 
     console.log(message);
 
-    DataSenderService.sendTextMessage(message, socket);
+    DataSenderService.broadcastMessage(message);
   }
 
   static #unmaskPayload(payload, maskKey) {
