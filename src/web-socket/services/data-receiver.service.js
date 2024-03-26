@@ -74,13 +74,11 @@ export class DataReceiverService {
     }
 
     const message = {
-      data,
+      message: data.message,
       at: new Date().toISOString(),
     };
 
-    console.log(message);
-
-    DataSenderService.broadcastMessage(message);
+    DataSenderService.broadcastMessage(message, data.room);
   }
 
   static #unmaskPayload(payload, maskKey) {

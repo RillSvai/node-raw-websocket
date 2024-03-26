@@ -6,9 +6,9 @@ import {
   MAX_LENGTH_16BIT,
   MAX_LENGTH_64BIT,
 } from '../web-socket.constants.js';
+import { ClientManagerService } from './client-manager.service.js';
 
 export class DataSenderService {
-  static connectedClients = new Set();
   constructor() {
     throw new Error(STATIC_CLASS);
   }
@@ -18,8 +18,8 @@ export class DataSenderService {
     socket.write(dataFrameBuffer);
   }
 
-  static broadcastMessage(message) {
-    for (const client of this.connectedClients) {
+  static broadcastMessage(message, roomName) {
+    for (const client of ClientManagerService.getClientsFromRoom(roomName)) {
       this.#sendTextMessage(message, client);
     }
   }
