@@ -80,7 +80,7 @@ export class DataReceiverService {
 
     console.log(message);
 
-    DataSenderService.sendTextMessage(message, socket);
+    DataSenderService.broadcastMessage(message);
   }
 
   static #unmaskPayload(payload, maskKey) {

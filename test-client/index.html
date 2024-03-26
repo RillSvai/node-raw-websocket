@@ -22,7 +22,7 @@
         webSocket.onerror = (event) => console.log('WebSocket error:', event);
         webSocket.onclose = (event) => {
           console.log('Disconnected from WebSocket server');
-          setTimeout(connectWebSocket, 3000);
+          setTimeout(connectWebSocket, 4000);
         };
       }
 
