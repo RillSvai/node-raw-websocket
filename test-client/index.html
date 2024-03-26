@@ -6,16 +6,26 @@
     <title>Client</title>
   </head>
   <body>
-    <button onclick="sendData()" style="width: 250px; height: 40px"></button>
+    <select id="roomSelector">
+      <option value="room1">Room 1</option>
+      <option value="room2">Room 2</option>
+    </select>
+    <button onclick="joinRoom()" style="width: 100px; height: 40px">Join Room</button>
+    <br />
+    <input type="text" id="messageInput" placeholder="Enter message" />
+    <button onclick="sendMessage()" style="width: 100px; height: 40px">Send</button>
     <output id="message-box"></output>
     <script>
       const messageBox = document.getElementById('message-box');
+      const roomSelector = document.getElementById('roomSelector');
+      const messageInput = document.getElementById('messageInput');
       let webSocket;
+      let currentRoom;
 
-      function connectWebSocket() {
-        webSocket = new WebSocket('ws://localhost:3333/');
+      function connectWebSocket(currentRoom) {
+        webSocket = new WebSocket(`ws://localhost:3333/${currentRoom}`);
 
-        webSocket.onopen = (event) => console.log('Connected to WebSocket server');
+        webSocket.onopen = () => console.log('Connected to WebSocket server');
         webSocket.onmessage = (event) => {
           messageBox.innerHTML += `</br> ${event.data}`;
         };
@@ -26,12 +36,20 @@
         };
       }
 
-      function sendData() {
-        const id = Math.round(Math.random() * 1000);
+      function joinRoom() {
+        console.log('Joining');
+        const selectedRoom = roomSelector.value;
+        if (selectedRoom !== currentRoom) {
+          currentRoom = selectedRoom;
+          connectWebSocket(currentRoom);
+        }
+      }
 
+      function sendMessage() {
+        const message = messageInput.value;
         const data = {
-          id,
-          name: `[${id}] Client`,
+          room: currentRoom,
+          message: message,
         };
 
         if (webSocket.readyState === WebSocket.OPEN) {
@@ -40,8 +58,6 @@
           console.log('WebSocket is not open. State: ' + webSocket.readyState);
         }
       }
-
-      connectWebSocket();
     </script>
   </body>
 </html>
