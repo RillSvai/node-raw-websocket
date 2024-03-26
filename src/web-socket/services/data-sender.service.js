@@ -8,7 +8,7 @@ import {
 } from '../web-socket.constants.js';
 
 export class DataSenderService {
-  static #connectedClients = new Set();
+  static connectedClients = new Set();
   constructor() {
     throw new Error(STATIC_CLASS);
   }
@@ -19,7 +19,7 @@ export class DataSenderService {
   }
 
   static broadcastMessage(message) {
-    for (const client of this.#connectedClients) {
+    for (const client of this.connectedClients) {
       this.#sendTextMessage(message, client);
     }
   }
